@@ -66,20 +66,17 @@ func main() {
 	planet := Planet{Pos: centre, Col: rl.Orange}
 
 	rl.InitWindow(WIDTH, HEIGHT, TITLE)
-	rl.SetTargetFPS(60)
+	//rl.SetTargetFPS(60)
 
 	// used to store the points that the orbiter has already been at
 	// using map[pos]bool instead of list of positions as a hacky way to prevent storing tonnes of duplicate values
 	orbitPoints := map[rl.Vector2]bool{}
-	orbitPoints[moon.Pos] = true
 
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.Black)
 
 		moon.updatePos(planet.Pos)
-		// add the moon's current position to the
-		orbitPoints[moon.Pos] = true
 
 		// draw
 		moon.drawPlanet()
@@ -87,6 +84,7 @@ func main() {
 
 		// draw orbits
 		if DRAW_ORBIT {
+			orbitPoints[moon.Pos] = true
 			for pos, _ := range orbitPoints {
 				rl.DrawCircleV(pos, 2, rl.RayWhite)
 			}
@@ -97,6 +95,7 @@ func main() {
 			rl.DrawText(fmt.Sprintf("Pos: %v", moon.Pos), 10, 25, 15, rl.Green)
 			rl.DrawText(fmt.Sprintf("Vel: %v", moon.Vel), 10, 40, 15, rl.Green)
 			rl.DrawText(fmt.Sprintf("Acc: %v", moon.Acc), 10, 55, 15, rl.Green)
+			rl.DrawText(fmt.Sprintf("orbit points: %v", len(orbitPoints)), 10, 70, 15, rl.Green)
 		}
 		rl.EndDrawing()
 	}
