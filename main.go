@@ -6,8 +6,8 @@ import (
 )
 
 // window stuff
-const WIDTH = 800
-const HEIGHT = 600
+const WIDTH = 1512
+const HEIGHT = 830
 const TITLE = "planet sim"
 
 // planet stuff
@@ -60,14 +60,19 @@ func main() {
 	// the one that moves
 	moon := Planet{
 		Pos: rl.Vector2Add(centre, rl.Vector2{X: 100}),
-		Vel: rl.Vector2{Y: 1000},
+		Vel: rl.Vector2{Y: 100},
 		Col: PLANET_COL,
 	}
-	planet := Planet{Pos: centre, Col: rl.Orange}
+	moon2 := Planet{
+		Pos: rl.Vector2Add(centre, rl.Vector2{X: 400}),
+		Vel: rl.Vector2{Y: 400},
+		Col: rl.Gray,
+	}
+	planet := Planet{Pos: centre, Col: rl.DarkGreen}
 
 	rl.InitWindow(WIDTH, HEIGHT, TITLE)
 	defer rl.CloseWindow()
-	rl.SetTargetFPS(60)
+	rl.SetTargetFPS(30)
 
 	// used to store the points that the orbiter has already been at
 	// using map[pos]bool instead of list of positions as a hacky way to prevent storing tonnes of duplicate values
@@ -78,10 +83,12 @@ func main() {
 		rl.ClearBackground(rl.Black)
 
 		moon.updatePos(planet.Pos)
+		moon2.updatePos(planet.Pos)
 
 		// draw
 		moon.drawPlanet()
 		planet.drawPlanet()
+		moon2.drawPlanet()
 
 		// draw orbits
 		if DRAW_ORBIT {
