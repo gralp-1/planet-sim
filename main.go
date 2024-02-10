@@ -15,7 +15,7 @@ const PLANET_RAD float32 = 10.0
 
 // flags
 const DEBUG = true
-const DRAW_ORBIT = true
+const DRAW_ORBIT = false
 
 // colour stuff (can't make this constant but we can pretend)
 var VEL_LINE_COL = rl.Green
@@ -60,13 +60,14 @@ func main() {
 	// the one that moves
 	moon := Planet{
 		Pos: rl.Vector2Add(centre, rl.Vector2{X: 100}),
-		Vel: rl.Vector2{Y: 2000},
+		Vel: rl.Vector2{Y: 1000},
 		Col: PLANET_COL,
 	}
 	planet := Planet{Pos: centre, Col: rl.Orange}
 
 	rl.InitWindow(WIDTH, HEIGHT, TITLE)
-	//rl.SetTargetFPS(60)
+	defer rl.CloseWindow()
+	rl.SetTargetFPS(60)
 
 	// used to store the points that the orbiter has already been at
 	// using map[pos]bool instead of list of positions as a hacky way to prevent storing tonnes of duplicate values
@@ -85,17 +86,18 @@ func main() {
 		// draw orbits
 		if DRAW_ORBIT {
 			orbitPoints[moon.Pos] = true
-			for pos, _ := range orbitPoints {
+			for pos := range orbitPoints {
 				rl.DrawCircleV(pos, 2, rl.RayWhite)
 			}
 		}
 
 		if DEBUG {
 			rl.DrawFPS(10, 10)
-			rl.DrawText(fmt.Sprintf("Pos: %v", moon.Pos), 10, 25, 15, rl.Green)
-			rl.DrawText(fmt.Sprintf("Vel: %v", moon.Vel), 10, 40, 15, rl.Green)
-			rl.DrawText(fmt.Sprintf("Acc: %v", moon.Acc), 10, 55, 15, rl.Green)
-			rl.DrawText(fmt.Sprintf("orbit points: %v", len(orbitPoints)), 10, 70, 15, rl.Green)
+			rl.DrawText(fmt.Sprintf("Pos: %v", moon.Pos), 10, 25, 15, rl.DarkGreen)
+			rl.DrawText(fmt.Sprintf("Vel: %v", moon.Vel), 10, 40, 15, rl.DarkGreen)
+			rl.DrawText(fmt.Sprintf("Acc: %v", moon.Acc), 10, 55, 15, rl.DarkGreen)
+			rl.DrawText(fmt.Sprintf("Spd: %v", rl.Vector2Length(moon.Acc)), 10, 70, 15, rl.DarkGreen)
+			rl.DrawText(fmt.Sprintf("orbit points: %v", len(orbitPoints)), 10, 85, 15, rl.DarkGreen)
 		}
 		rl.EndDrawing()
 	}
