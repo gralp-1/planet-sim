@@ -13,8 +13,9 @@ const TITLE = "planet sim"
 // planet stuff
 const PLANET_RAD float32 = 10.0
 
-// debug stuff
+// flags
 const DEBUG = true
+const DRAW_ORBIT = true
 
 // colour stuff (can't make this constant but we can pretend)
 var VEL_LINE_COL = rl.Green
@@ -52,6 +53,7 @@ func (p *Planet) drawPlanet() {
 }
 
 func main() {
+	// TODO: flags (debug, draw orbit etc) passed in as flags rather than constant, maybe at compile time?
 	// TODO: dynamic orbiters
 	centre := rl.Vector2{X: WIDTH / 2, Y: HEIGHT / 2}
 
@@ -83,10 +85,11 @@ func main() {
 		moon.drawPlanet()
 		planet.drawPlanet()
 
-		// TODO: hide behind flag
 		// draw orbits
-		for pos, _ := range orbitPoints {
-			rl.DrawCircleV(pos, 2, rl.RayWhite)
+		if DRAW_ORBIT {
+			for pos, _ := range orbitPoints {
+				rl.DrawCircleV(pos, 2, rl.RayWhite)
+			}
 		}
 
 		if DEBUG {
